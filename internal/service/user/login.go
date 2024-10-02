@@ -3,20 +3,14 @@ package user
 import (
 	"context"
 	"errors"
-	"time"
 
 	"github.com/Timofey335/jwt_server/internal/repository/model"
 	"github.com/Timofey335/jwt_server/internal/utils"
 	descAuth "github.com/Timofey335/jwt_server/pkg/auth_v1"
 )
 
-const (
-	refreshTokenSecretKey  = "W4/X+LLjehdxptt4YgGFCvMpq5ewptpZZYRHY6A72g0="
-	refreshTokenExpiration = 60 * time.Minute
-)
-
 func (s *serv) Login(ctx context.Context, req *descAuth.LoginRequest) (*descAuth.LoginResponse, error) {
-	user, err := s.userRepository.GetPassword(ctx, req)
+	user, err := s.userRepository.GetUserData(ctx, req.Username)
 	if err != nil {
 		return nil, err
 	}
@@ -28,7 +22,7 @@ func (s *serv) Login(ctx context.Context, req *descAuth.LoginRequest) (*descAuth
 	}
 
 	refreshToken, err := utils.GenerateToken(model.UserData{
-		Username: user.Name,
+		Username: req.Username,
 		Role:     user.Role,
 	},
 		[]byte(refreshTokenSecretKey),

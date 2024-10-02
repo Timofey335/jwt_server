@@ -77,3 +77,14 @@ func (s *serverAuth) Login(ctx context.Context, req *descAuth.LoginRequest) (*de
 		RefreshToken: refreshToken.RefreshToken,
 	}, nil
 }
+
+func (s *serverAuth) GetRefreshToken(ctx context.Context, req *descAuth.GetRefreshTokenRequest) (*descAuth.GetRefreshTokenResponse, error) {
+	refreshToken, err := s.userService.GetRefreshToken(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+
+	return &descAuth.GetRefreshTokenResponse{
+		RefreshToken: refreshToken.RefreshToken,
+	}, nil
+}

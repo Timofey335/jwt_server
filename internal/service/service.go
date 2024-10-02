@@ -8,4 +8,5 @@ import (
 
 type UserService interface {
 	Login(ctx context.Context, req *descAuth.LoginRequest) (*descAuth.LoginResponse, error)
+	GetRefreshToken(ctx context.Context, req *descAuth.GetRefreshTokenRequest) (*descAuth.GetRefreshTokenResponse, error)
 }

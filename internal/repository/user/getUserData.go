@@ -7,14 +7,13 @@ import (
 	"google.golang.org/grpc/status"
 
 	repoModel "github.com/Timofey335/jwt_server/internal/repository/model"
-	descAuth "github.com/Timofey335/jwt_server/pkg/auth_v1"
 )
 
-func (r *repo) GetPassword(ctx context.Context, req *descAuth.LoginRequest) (*repoModel.UserRepoModel, error) {
+func (r *repo) GetUserData(ctx context.Context, userName string) (*repoModel.UserRepoModel, error) {
 	builderSelect := sq.Select(passwordColumn, roleColumn).
 		From(tableName).
 		PlaceholderFormat(sq.Dollar).
-		Where(sq.Eq{nameColumn: req.Username})
+		Where(sq.Eq{nameColumn: userName})
 
 	query, args, err := builderSelect.ToSql()
 	if err != nil {
